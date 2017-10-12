@@ -1,0 +1,13 @@
+
+apply plugin: 'war'
+
+description = 'Conference :: Vote'
+dependencies {
+  compile project(':demo-bootstrap')
+    runtime group: 'net.wasdev.wlp.starters.microprofile', name: 'runtime-pom', version:'0.0.1-SNAPSHOT'
+    testCompile group: 'org.glassfish.jersey.core', name: 'jersey-common', version:'2.23.2'
+    testCompile group: 'org.apache.cxf', name: 'cxf-rt-rs-client', version:'3.1.1'
+    testCompile group: 'org.glassfish', name: 'javax.json', version:'1.0.4'
+    providedCompile group: 'net.wasdev.wlp.starters.microprofile', name: 'provided-pom', version:'0.0.1-SNAPSHOT'
+    providedCompile group: 'javax.annotation', name: 'javax.annotation-api', version:'1.2'
+}
