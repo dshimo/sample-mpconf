@@ -28,3 +28,4 @@ ui.bat
 .distribution
 .microprofile
 *.gradle/
+*build

@@ -1,4 +1,4 @@
-
+apply plugin: 'liberty'
 apply plugin: 'war'
 
 description = 'Conference :: Session'
@@ -6,4 +6,32 @@ dependencies {
   compile project(':demo-bootstrap')
     providedCompile group: 'javax', name: 'javaee-api', version:'7.0'
     providedCompile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version:'2.8.2'
+}
+
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0'
+	}
+}
+
+ext {
+    // Liberty server properties
+    wlpServerName = 'sessionServer'
+    // testServerHttpPort = 8080
+    // testServerHttpsPort = 9445
+}
+
+liberty {
+	server {
+		name = wlpServerName
+		configFile = file("${projectDir}/src/main/liberty/config/server.xml")
+	}
+}
+
+task url {
+	println ("http://localhost:5050")
 }

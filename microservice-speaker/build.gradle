@@ -1,9 +1,9 @@
-
+apply plugin: 'liberty'
 apply plugin: 'war'
 
 description = 'Conference :: Speaker'
 dependencies {
-  compile project(':demo-bootstrap')
+    compile project(':demo-bootstrap')
     compile group: 'org.codehaus.swizzle', name: 'swizzle-stream', version:'1.6.2'
     compile group: 'commons-io', name: 'commons-io', version:'2.5'
     compile group: 'commons-collections', name: 'commons-collections', version:'3.2.2'
@@ -18,3 +18,33 @@ dependencies {
     providedCompile group: 'javax.enterprise', name: 'cdi-api', version:'1.2'
     providedCompile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version:'2.0'
 }
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0'
+    }
+}
+
+ext {
+    // Liberty server properties
+    wlpServerName = 'speakerServer'
+    // testServerHttpPort = 8080
+    // testServerHttpsPort = 9445
+}
+
+liberty {
+    server {
+        name = wlpServerName
+        configFile = file("${projectDir}/src/main/liberty/config/server.xml")
+    }
+}
+
+task url {
+    println ("http://localhost:4040")
+}
+
+check.dependsOn ':demo-bootstrap:build'

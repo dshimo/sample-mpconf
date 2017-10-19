@@ -1,9 +1,9 @@
-
+apply plugin: 'liberty'
 apply plugin: 'war'
 
 description = 'Conference :: Vote'
 dependencies {
-  compile project(':demo-bootstrap')
+    compile project(':demo-bootstrap')
     runtime group: 'net.wasdev.wlp.starters.microprofile', name: 'runtime-pom', version:'0.0.1-SNAPSHOT'
     testCompile group: 'org.glassfish.jersey.core', name: 'jersey-common', version:'2.23.2'
     testCompile group: 'org.apache.cxf', name: 'cxf-rt-rs-client', version:'3.1.1'
@@ -11,3 +11,49 @@ dependencies {
     providedCompile group: 'net.wasdev.wlp.starters.microprofile', name: 'provided-pom', version:'0.0.1-SNAPSHOT'
     providedCompile group: 'javax.annotation', name: 'javax.annotation-api', version:'1.2'
 }
+
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0'
+	}
+}
+
+ext {
+    // Liberty server properties
+    wlpServerName = 'voteServer'
+    testServerHttpPort = 7070
+    testServerHttpsPort = 9443
+    servicePort = 9191
+    warContext = "vote"
+}
+
+liberty {
+	server {
+		name = wlpServerName
+		configFile = file("${projectDir}/src/main/liberty/config/server.xml")
+		bootstrapProperties = ['default.http.port': testServerHttpPort, 'default.https.port': testServerHttpsPort]
+	}
+}
+
+// test {
+// 	   println 'inside the test block'
+//     reports.html.destination = file("$buildDir/reports/unit")
+//     reports.junitXml.destination = file("$buildDir/test-results/unit")
+//     exclude '**/it/**'
+// }
+
+task integrationTest(type: Test) {
+    group 'Verification'
+    description 'Runs the integration tests.'
+    reports.html.destination = file("$buildDir/reports/it")
+    reports.junitXml.destination = file("$buildDir/test-results/it")
+    include '**/it/**'
+    exclude '**/unit/**'
+
+    systemProperties = ['liberty.test.port': testServerHttpPort, 'war.context': warContext]
+}
+

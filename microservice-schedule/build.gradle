@@ -1,8 +1,36 @@
-
+apply plugin: 'liberty'
 apply plugin: 'war'
 
 description = 'Conference :: Schedule'
 dependencies {
   compile project(':demo-bootstrap')
     providedCompile group: 'javax', name: 'javaee-api', version:'7.0'
+}
+
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0'
+	}
+}
+
+ext {
+    // Liberty server properties
+    wlpServerName = 'scheduleServer'
+    // testServerHttpPort = 8080
+    // testServerHttpsPort = 9445
+}
+
+liberty {
+	server {
+		name = wlpServerName
+		configFile = file("${projectDir}/src/main/liberty/config/server.xml")
+	}
+}
+
+task url {
+	println ("http://localhost:6060")
 }

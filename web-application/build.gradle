@@ -1,4 +1,39 @@
-
+apply plugin: 'liberty'
 apply plugin: 'war'
 
 description = 'Conference :: Web'
+
+buildscript {
+	repositories {
+		mavenLocal()
+		maven {
+			name = 'Sonatype Nexus Snapshots'
+			url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+		}
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0-SNAPSHOT'
+	}
+}
+
+ext {
+    // Liberty server properties
+    wlpServerName = 'uiServer'
+    testServerHttpPort = 8080
+    // testServerHttpsPort = 9445
+}
+
+liberty {
+	server {
+		name = wlpServerName
+	}
+}
+
+gradle.taskGraph.whenReady { graph ->
+	if (graph.hasTask(":web-application:libertyStart")) {
+		libertyStart.doLast {
+			println ("Application is running on http://localhost:${testServerHttpPort}/")
+		}
+	}
+}
