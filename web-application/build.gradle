@@ -17,6 +17,10 @@ buildscript {
 	}
 }
 
+war {
+    archiveName = 'ROOT.' + extension
+}
+
 ext {
     // Liberty server properties
     wlpServerName = 'uiServer'
@@ -27,6 +31,7 @@ ext {
 liberty {
 	server {
 		name = wlpServerName
+        looseApplication = false
 	}
 }
 
