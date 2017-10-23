@@ -20,7 +20,8 @@ dependencies {
     providedCompile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version:'2.0'
 
     // Currently hard coded. Investigating.
-    testCompile files("/Applications/jdk1.8.0_151/lib/tools.jar")
+    compile files("${System.properties['java.home']}/../lib/tools.jar")
+    // testCompile files("/Applications/jdk1.8.0_151/lib/tools.jar")
 }
 
 war {

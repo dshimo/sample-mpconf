@@ -4,16 +4,13 @@ apply plugin: 'war'
 description = 'Conference :: Vote'
 dependencies {
     compile project(':demo-bootstrap')
-    // runtime group: 'net.wasdev.wlp.starters.microprofile', name: 'runtime-pom', version:'0.0.1-SNAPSHOT'
     testCompile group: 'org.glassfish.jersey.core', name: 'jersey-common', version:'2.23.2'
     testCompile group: 'org.apache.cxf', name: 'cxf-rt-rs-client', version:'3.1.1'
     testCompile group: 'org.glassfish', name: 'javax.json', version:'1.0.4'
-    //added vv
-    compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version:'2.1'
+    compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version:'2.0'
     compile group: 'javax.inject', name: 'javax.inject', version:'1'
     compile group: 'javax.interceptor', name: 'javax.interceptor-api', version: '1.2.1'
     compile group: 'javax.enterprise', name: 'cdi-api', version: '2.0'
-    // providedCompile group: 'net.wasdev.wlp.starters.microprofile', name: 'provided-pom', version:'0.0.1-SNAPSHOT'
     providedCompile group: 'javax.annotation', name: 'javax.annotation-api', version:'1.2'
 }
 
@@ -44,12 +41,14 @@ liberty {
 	}
 }
 
-// test {
-// 	   println 'inside the test block'
-//     reports.html.destination = file("$buildDir/reports/unit")
-//     reports.junitXml.destination = file("$buildDir/test-results/unit")
-//     exclude '**/it/**'
-// }
+test {
+    doLast {
+        println 'inside the test block'
+    }
+    reports.html.destination = file("$buildDir/reports/unit")
+    reports.junitXml.destination = file("$buildDir/test-results/unit")
+    exclude '**/it/**'
+}
 
 task integrationTest(type: Test) {
     group 'Verification'
