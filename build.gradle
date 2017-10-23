@@ -14,9 +14,9 @@ subprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven {
-            url "http://liberty-app-accelerator.wasdev.developer.ibm.com/start/api/v1/repo"
-        }
+        // maven {
+        //     url "http://liberty-app-accelerator.wasdev.developer.ibm.com/start/api/v1/repo"
+        // }
     }
 
     dependencies {

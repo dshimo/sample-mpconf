@@ -3,5 +3,4 @@ description = 'Conference :: Bootstrap Data'
 dependencies {
     compileOnly group: 'javax', name: 'javaee-api', version:'7.0'
     compile group: 'org.glassfish', name: 'javax.json', version:'1.0.4'
-    // testCompile group: 'org.glassfish', name: 'javax.json', version:'1.0.4'
 }

@@ -3,7 +3,7 @@ apply plugin: 'war'
 
 description = 'Conference :: Schedule'
 dependencies {
-  compile project(':demo-bootstrap')
+    compile project(':demo-bootstrap')
     providedCompile group: 'javax', name: 'javaee-api', version:'7.0'
 }
 
@@ -13,24 +13,29 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0'
+		classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.1-SNAPSHOT'
 	}
+}
+
+war {
+    archiveName = "ROOT." + extension
 }
 
 ext {
     // Liberty server properties
     wlpServerName = 'scheduleServer'
-    // testServerHttpPort = 8080
-    // testServerHttpsPort = 9445
 }
 
 liberty {
 	server {
 		name = wlpServerName
 		configFile = file("${projectDir}/src/main/liberty/config/server.xml")
-	}
+        looseApplication = false
+    }
 }
 
 task url {
-	println ("http://localhost:6060")
+    doLast {
+        println ("http://localhost:6060")
+    }
 }

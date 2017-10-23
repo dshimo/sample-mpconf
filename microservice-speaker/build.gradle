@@ -47,6 +47,7 @@ liberty {
     server {
         name = wlpServerName
         configFile = file("${projectDir}/src/main/liberty/config/server.xml")
+        looseApplication = false
     }
 }
 
