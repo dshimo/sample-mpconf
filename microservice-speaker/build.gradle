@@ -14,9 +14,17 @@ dependencies {
     testCompile group: 'net.javacrumbs.json-unit', name: 'json-unit-fluent', version:'1.12.1'
     testCompile group: 'org.jboss.resteasy', name: 'resteasy-jackson-provider', version:'3.0.19.Final'
     testCompile group: 'org.jboss.resteasy', name: 'resteasy-client', version:'3.0.19.Final'
+    testCompile group: 'org.jboss.shrinkwrap', name: 'shrinkwrap-api', version: '1.2.6'
     testCompile group: 'org.jboss.shrinkwrap.resolver', name: 'shrinkwrap-resolver-impl-maven', version:'2.2.0'
     providedCompile group: 'javax.enterprise', name: 'cdi-api', version:'1.2'
     providedCompile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version:'2.0'
+
+    // Currently hard coded. Investigating.
+    testCompile files("/Applications/jdk1.8.0_151/lib/tools.jar")
+}
+
+war {
+    archiveName = 'ROOT.' + extension
 }
 
 buildscript {
@@ -25,15 +33,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0'
+        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.1-SNAPSHOT'
     }
 }
 
 ext {
     // Liberty server properties
     wlpServerName = 'speakerServer'
-    // testServerHttpPort = 8080
-    // testServerHttpsPort = 9445
 }
 
 liberty {
@@ -43,8 +49,22 @@ liberty {
     }
 }
 
+test {
+    systemProperties = ['wlp.home': "${projectDir}/build/wlp"]
+}
+
 task url {
-    println ("http://localhost:4040")
+    doLast {
+        println ("http://localhost:4040")
+    }
 }
 
 check.dependsOn ':demo-bootstrap:build'
+
+task printClasspath {
+    doLast {
+        configurations.testRuntime.each {println it}
+    }
+}
+
+test.dependsOn 'libertyCreate'
