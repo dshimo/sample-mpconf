@@ -13,4 +13,5 @@ project(':microservice-vote').projectDir = "$rootDir/microservice-vote" as File
 project(':microservice-speaker').projectDir = "$rootDir/microservice-speaker" as File
 project(':microservice-schedule').projectDir = "$rootDir/microservice-schedule" as File
 project(':web-application').projectDir = "$rootDir/web-application" as File
-project(':gulp-builder').projectDir = "${project(':web-application')}/src/main/static" as File
+project(':gulp-builder').projectDir = "$rootDir/web-application/src/main/static" as File
+// project(':gulp-builder').projectDir = "${project(':web-application')}/src/main/static" as File
