@@ -19,13 +19,8 @@ dependencies {
     providedCompile group: 'javax.enterprise', name: 'cdi-api', version:'1.2'
     providedCompile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version:'2.0'
 
-    // Currently hard coded. Investigating.
+    // Include tools.jar in classpath
     compile files("${System.properties['java.home']}/../lib/tools.jar")
-    // testCompile files("/Applications/jdk1.8.0_151/lib/tools.jar")
-}
-
-war {
-    archiveName = 'ROOT.' + extension
 }
 
 buildscript {
@@ -38,6 +33,10 @@ buildscript {
     }
 }
 
+war {
+    archiveName = 'ROOT.' + extension
+}
+
 ext {
     // Liberty server properties
     wlpServerName = 'speakerServer'
@@ -46,8 +45,6 @@ ext {
 liberty {
     server {
         name = wlpServerName
-        configFile = file("${projectDir}/src/main/liberty/config/server.xml")
-        looseApplication = false
     }
 }
 
@@ -63,10 +60,6 @@ task url {
 
 check.dependsOn ':demo-bootstrap:build'
 
-task printClasspath {
-    doLast {
-        configurations.testRuntime.each {println it}
-    }
-}
-
 test.dependsOn 'libertyCreate'
+// libertyRun.dependsOn 'installApps'
+// libertyStart.dependsOn 'installApps'

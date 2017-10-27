@@ -1,25 +1,24 @@
-apply plugin: 'liberty'
 apply plugin: 'war'
+apply plugin: 'liberty'
 
 description = 'Conference :: Web'
+dependencies {
+    libertyRuntime group: 'io.openliberty', name: 'openliberty-runtime', version:'17.0.0.3'
+}
 
 buildscript {
 	repositories {
 		mavenLocal()
-		maven {
-			name = 'Sonatype Nexus Snapshots'
-			url = 'https://oss.sonatype.org/content/repositories/snapshots/'
-		}
 		mavenCentral()
 	}
 	dependencies {
-		classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0-SNAPSHOT'
+		classpath "net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.1-SNAPSHOT"
 	}
 }
 
-war {
+/*war {
     archiveName = 'ROOT.' + extension
-}
+}*/
 
 ext {
     // Liberty server properties
@@ -31,7 +30,6 @@ ext {
 liberty {
 	server {
 		name = wlpServerName
-        looseApplication = false
 	}
 }
 

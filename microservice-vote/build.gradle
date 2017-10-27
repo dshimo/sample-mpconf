@@ -3,8 +3,6 @@ apply plugin: 'war'
 
 dependencies {
     compile project(':demo-bootstrap')
-    // runtime group: 'net.wasdev.wlp.starters.microprofile', name: 'runtime-pom', version:'0.0.1-SNAPSHOT'
-    compile group: 'net.wasdev.wlp.starters.microprofile', name:'server-snippet', version:'0.0.1-SNAPSHOT'
     testCompile group: 'org.glassfish.jersey.core', name: 'jersey-common', version:'2.23.2'
     testCompile group: 'org.apache.cxf', name: 'cxf-rt-rs-client', version:'3.1.1'
     testCompile group: 'org.glassfish', name: 'javax.json', version:'1.0.4'
@@ -13,7 +11,6 @@ dependencies {
     compileOnly group: 'javax.interceptor', name: 'javax.interceptor-api', version: '1.2.1'
     compileOnly group: 'javax.enterprise', name: 'cdi-api', version: '2.0'
     providedCompile group: 'javax.annotation', name: 'javax.annotation-api', version:'1.2'
-    // providedCompile group: 'net.wasdev.wlp.starters.microprofile', name: 'provided-pom', version:'0.0.1-SNAPSHOT' 
     libertyRuntime group: 'io.openliberty', name: 'openliberty-runtime', version:'17.0.0.3'
 }
 
@@ -27,12 +24,6 @@ buildscript {
 	}
 }
 
-repositories {
-	maven {
-		url 'http://liberty-app-accelerator.wasdev.developer.ibm.com/start/api/v1/repo'
-	}
-}
-
 war {
 	archiveName = 'ROOT.' + extension
 }
@@ -42,23 +33,15 @@ ext {
     wlpServerName = 'voteServer'
 	testServerHttpPort = 7070
     testServerHttpsPort = 9443
-    // servicePort = 9191
     warContext = "vote"
 }
 
 liberty {
 	server {
 		name = wlpServerName
-		configFile = file("${projectDir}/src/main/liberty/config/server.xml")
 		bootstrapProperties = ['default.http.port': testServerHttpPort, 'default.https.port': testServerHttpsPort]
-        looseApplication = false
         dropins = [war]
 	}
-}
-
-task copyConfigDropins(type: Copy) {
-	from "${projectDir}/src/main/liberty/config/server-snippet.xml"
-	into "${projectDir}/build/wlp/usr/servers/voteServer/configDropins/defaults/"
 }
 
 test {
@@ -81,4 +64,6 @@ task integrationTest(type: Test) {
     systemProperties = ['liberty.test.port': testServerHttpPort, 'war.context': warContext]
 }
 
-installApps.finalizedBy 'copyConfigDropins'
+// libertyRun.dependsOn 'installApps'
+// libertyStart.dependsOn 'installApps'
+

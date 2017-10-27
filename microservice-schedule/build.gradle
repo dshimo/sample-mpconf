@@ -22,15 +22,13 @@ war {
 }
 
 ext {
-    // Liberty server properties
+	// Liberty server properties
     wlpServerName = 'scheduleServer'
 }
 
 liberty {
 	server {
 		name = wlpServerName
-		configFile = file("${projectDir}/src/main/liberty/config/server.xml")
-        looseApplication = false
     }
 }
 

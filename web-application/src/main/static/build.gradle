@@ -1,0 +1,16 @@
+apply plugin: "com.moowork.node"
+apply plugin: "com.moowork.gulp"
+description = "Gradle wrapper for npm, bower, and gulp"
+
+dependencies {
+    classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
+}
+
+buildscript {
+    repositories {
+        mavenLocal()
+	    maven {
+	        url "https://plugins.gradle.org/m2/"
+	    }
+    }
+}
