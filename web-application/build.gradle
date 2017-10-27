@@ -32,6 +32,7 @@ ext {
 liberty {
 	server {
 		name = wlpServerName
+        looseApplication = false
 	}
 }
 
@@ -52,5 +53,5 @@ task deleteTarget(type: Delete) {
     delete("target")
 }
 
-war.dependsOn ':gulp-builder:gulp_build'
+// war.dependsOn ':gulp-builder:gulp_build'
 // war.finalizedBy 'copyTarget', 'deleteTarget'
