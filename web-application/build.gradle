@@ -16,9 +16,11 @@ buildscript {
 	}
 }
 
-/*war {
+war {
+    from "build/static-resources"
+    webAppDirName = "src/main/local/webapp"
     archiveName = 'ROOT.' + extension
-}*/
+}
 
 ext {
     // Liberty server properties
@@ -40,3 +42,15 @@ gradle.taskGraph.whenReady { graph ->
 		}
 	}
 }
+
+task copyTarget(type: Copy) {
+    from "target"
+    into "build"
+}
+
+task deleteTarget(type: Delete) {
+    delete("target")
+}
+
+war.dependsOn ':gulp-builder:gulp_build'
+// war.finalizedBy 'copyTarget', 'deleteTarget'
