@@ -59,6 +59,10 @@ gulp {
     gulpFile 'src/main/static/gulpfile.js'
 }
 
+nodejs {
+    executable version : '8.8.1'
+}
+
 task gulpBuild(type: org.ysb33r.gradle.nodejs.tasks.GulpTask) {
 	target 'build'
 }
