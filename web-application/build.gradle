@@ -60,7 +60,7 @@ gulp {
 }
 
 nodejs {
-    executable version : '8.8.1'
+    executable version : '7.0.0'
 }
 
 task gulpBuild(type: org.ysb33r.gradle.nodejs.tasks.GulpTask) {
