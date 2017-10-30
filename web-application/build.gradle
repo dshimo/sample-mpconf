@@ -55,18 +55,6 @@ task cpEndpointsService(type: Copy) {
     into "src/main/static/app/shared"
 }
 
-// nodeexec {
-// 	script 'src/main/static/gulpfile.js'
-// }
-
-// nodejs {
-// 	executable version : '8.8.1'
-// }
-
-// npm {
-// 	executable version : '5.4.2'
-// }
-
 gulp {
     gulpFile 'src/main/static/gulpfile.js'
 }
@@ -84,6 +72,6 @@ task deleteTarget(type: Delete) {
     delete("target")
 }
 
-installApps.dependsOn 'build'
+build.dependsOn 'gulpBuild'
 war.dependsOn 'copyTarget'
-// clean.finalizedBy 'deleteTarget'
+clean.finalizedBy 'deleteTarget'
