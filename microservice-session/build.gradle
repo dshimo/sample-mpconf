@@ -30,14 +30,13 @@ ext {
 liberty {
 	server {
 		name = wlpServerName
+		looseApplication = false
 	}
 }
 
 task url {
     doLast {
-	    println ("http://localhost:5050")
+	    println ("Session :: http://localhost:5050")
     }
 }
 
-// libertyRun.dependsOn 'installApps'
-// libertyStart.dependsOn 'installApps'

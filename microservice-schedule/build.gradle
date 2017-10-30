@@ -29,11 +29,12 @@ ext {
 liberty {
 	server {
 		name = wlpServerName
+		looseApplication = false
     }
 }
 
 task url {
     doLast {
-        println ("http://localhost:6060")
+        println ("Schedule :: http://localhost:6060")
     }
 }

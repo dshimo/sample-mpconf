@@ -3,7 +3,7 @@ apply plugin: 'liberty'
 
 description = 'Conference :: Web'
 dependencies {
-    libertyRuntime group: 'io.openliberty', name: 'openliberty-runtime', version:'17.0.0.3'
+    libertyRuntime group: 'com.ibm.websphere.appserver.runtime', name: 'wlp-webProfile7', version:'17.0.0.3'
 }
 
 buildscript {
@@ -26,7 +26,6 @@ ext {
     // Liberty server properties
     wlpServerName = 'uiServer'
     testServerHttpPort = 8080
-    // testServerHttpsPort = 9445
 }
 
 liberty {
@@ -53,5 +52,8 @@ task deleteTarget(type: Delete) {
     delete("target")
 }
 
-// war.dependsOn ':gulp-builder:gulp_build'
-// war.finalizedBy 'copyTarget', 'deleteTarget'
+installApps.dependsOn 'build'
+build.dependsOn ':gulp-builder:gulp_build', 'copyTarget'
+copyTarget.mustRunAfter ':gulp-builder:gulp_build'
+war.dependsOn 'copyTarget'
+clean.finalizedBy 'deleteTarget'

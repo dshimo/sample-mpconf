@@ -45,6 +45,7 @@ ext {
 liberty {
     server {
         name = wlpServerName
+        looseApplication = false
     }
 }
 
@@ -54,12 +55,9 @@ test {
 
 task url {
     doLast {
-        println ("http://localhost:4040")
+        println ("Speaker :: http://localhost:4040")
     }
 }
 
 check.dependsOn ':demo-bootstrap:build'
-
 test.dependsOn 'libertyCreate'
-// libertyRun.dependsOn 'installApps'
-// libertyStart.dependsOn 'installApps'

@@ -14,9 +14,9 @@ buildscript {
     }
 }
 
-task hello {
-    doLast {
-        println "Hello from Gulp-Builder!"
-    }
+task cpEndpointsService(type: Copy) {
+    from "${projectDir}/../local/static/app/shared/endpoints.service.ts"
+    into "app/shared"
 }
 
+gulp_build.dependsOn 'cpEndpointsService'
