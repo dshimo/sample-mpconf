@@ -1,5 +1,8 @@
 apply plugin: 'war'
 apply plugin: 'liberty'
+// apply plugin: 'org.ysb33r.nodejs.base'
+// apply plugin: 'org.ysb33r.nodejs.npm'
+apply plugin: 'org.ysb33r.nodejs.gulp'
 
 description = 'Conference :: Web'
 dependencies {
@@ -10,9 +13,13 @@ buildscript {
 	repositories {
 		mavenLocal()
 		mavenCentral()
+		maven {
+		    url "https://plugins.gradle.org/m2/"
+		}
 	}
 	dependencies {
 		classpath "net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.1-SNAPSHOT"
+		classpath "gradle.plugin.org.ysb33r.gradle:nodejs-gradle-plugin:0.1"
 	}
 }
 
@@ -43,6 +50,31 @@ gradle.taskGraph.whenReady { graph ->
 	}
 }
 
+task cpEndpointsService(type: Copy) {
+    from "src/main/local/static/app/shared/endpoints.service.ts"
+    into "src/main/static/app/shared"
+}
+
+// nodeexec {
+// 	script 'src/main/static/gulpfile.js'
+// }
+
+// nodejs {
+// 	executable version : '8.8.1'
+// }
+
+// npm {
+// 	executable version : '5.4.2'
+// }
+
+gulp {
+    gulpFile 'src/main/static/gulpfile.js'
+}
+
+task gulpBuild(type: org.ysb33r.gradle.nodejs.tasks.GulpTask) {
+	target 'build'
+}
+
 task copyTarget(type: Copy) {
     from "target"
     into "build"
@@ -53,7 +85,5 @@ task deleteTarget(type: Delete) {
 }
 
 installApps.dependsOn 'build'
-build.dependsOn ':gulp-builder:gulp_build', 'copyTarget'
-copyTarget.mustRunAfter ':gulp-builder:gulp_build'
 war.dependsOn 'copyTarget'
-clean.finalizedBy 'deleteTarget'
+// clean.finalizedBy 'deleteTarget'
