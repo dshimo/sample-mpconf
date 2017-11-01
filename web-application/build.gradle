@@ -50,6 +50,12 @@ gradle.taskGraph.whenReady { graph ->
 	}
 }
 
+task openWebApp {
+    doLast {
+        java.awt.Desktop.desktop.browse "http://localhost:${testServerHttpPort}/".toURI()
+    }
+}
+
 task cpEndpointsService(type: Copy) {
     from "src/main/local/static/app/shared/endpoints.service.ts"
     into "src/main/static/app/shared"
@@ -77,5 +83,6 @@ task deleteTarget(type: Delete) {
 }
 
 build.dependsOn 'gulpBuild'
+copyTarget.dependsOn 'gulpBuild'
 war.dependsOn 'copyTarget'
 clean.finalizedBy 'deleteTarget'
