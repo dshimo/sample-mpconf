@@ -1,4 +1,4 @@
-= MicroProfile Showcase Application https://travis-ci.org/OpenLiberty/sample-mpconf.svg?branch=master
+= MicroProfile Showcase Application
 
 == General information
 
