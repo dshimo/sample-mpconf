@@ -69,7 +69,15 @@ gulp {
 }
 
 nodejs {
-    executable version : '7.0.0'
+    executable version : '7.1.0'
+}
+
+npm {
+	homeDirectory 'src/main/static/'
+}
+
+task npmInstall(type: org.ysb33r.gradle.nodejs.tasks.NpmTask) {
+	command 'install'
 }
 
 task gulpBuild(type: org.ysb33r.gradle.nodejs.tasks.GulpTask) {
@@ -87,5 +95,6 @@ task deleteTarget(type: Delete) {
 
 build.dependsOn 'gulpBuild'
 copyTarget.dependsOn 'gulpBuild'
+gulpBuild.dependsOn 'npmInstall'
 war.dependsOn 'copyTarget'
 clean.finalizedBy 'deleteTarget'
