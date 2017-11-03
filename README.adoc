@@ -95,7 +95,7 @@ Click https://github.com/WASdev/ci.gradle[here] for full Gradle Liberty Plugin d
 === NPM issues
 
 The web-application project downloads and install all node and npm requirements using plugins. 
-Maven uses *com.github.eirslett:frontend-maven-plugin* and Gradle uses *https://plugins.gradle.org/plugin/org.ysb33r.nodejs.gulp*.
+Maven uses *https://github.com/eirslett/frontend-maven-plugin*, and Gradle uses *https://plugins.gradle.org/plugin/org.ysb33r.nodejs.gulp*.
 Sometimes this may fail if console permissions are not permissive enough.
 
 In such cases you will have to manually install some reqiurements:
