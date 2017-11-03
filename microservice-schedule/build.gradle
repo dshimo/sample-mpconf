@@ -5,39 +5,39 @@ description = 'Conference :: Schedule'
 dependencies {
     compile project(':demo-bootstrap')
     providedCompile group: 'javax', name: 'javaee-api', version:'7.0'
+    libertyRuntime group: 'io.openliberty', name: 'openliberty-runtime', version:'17.0.0.3'
 }
 
 buildscript {
-	repositories {
-		mavenLocal()
-		mavenCentral()
-		maven {
-			url 'https://oss.sonatype.org/content/repositories/snapshots/'
-		}
-	}
-	dependencies {
-		classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.1-SNAPSHOT'
-	}
+    repositories {
+        mavenCentral()
+        maven {
+            // to be removed
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+    }
+    dependencies {
+        // snapshot to be removed upon release
+        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0.1-SNAPSHOT'
+    }
+}
+
+ext {
+    // Liberty server properties
+    wlpServerName = 'scheduleServer'
 }
 
 war {
     archiveName = "ROOT." + extension
 }
 
-ext {
-	// Liberty server properties
-    wlpServerName = 'scheduleServer'
-}
-
 liberty {
-	server {
-		name = wlpServerName
-		looseApplication = false
+    server {
+        name = wlpServerName
+        looseApplication = false
     }
 }
 
 task url {
-    doLast {
-        println ("Schedule :: http://localhost:6060")
-    }
+    doLast { println ("Schedule :: http://localhost:6060") }
 }

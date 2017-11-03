@@ -15,39 +15,42 @@ dependencies {
 }
 
 buildscript {
-	repositories {
-		mavenLocal()
-		mavenCentral()
+    repositories {
+        mavenCentral()
         maven {
+            // to be removed
             url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
-	}
-	dependencies {
-		classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.1-SNAPSHOT'
-	}
-}
-
-war {
-	archiveName = 'ROOT.' + extension
+    }
+    dependencies {
+        // snaptshot to be removed upon release
+        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0.1-SNAPSHOT'
+    }
 }
 
 ext {
-	// Liberty server properties
+    // Liberty server properties
     wlpServerName = 'voteServer'
-	testServerHttpPort = 7070
+    testServerHttpPort = 7070
     testServerHttpsPort = 9443
     warContext = "vote"
 }
 
-liberty {
-	server {
-		name = wlpServerName
-		bootstrapProperties = ['default.http.port': testServerHttpPort, 'default.https.port': testServerHttpsPort]
-        dropins = [war]
-        looseApplication = false
-	}
+war {
+    archiveName = 'ROOT.' + extension
 }
 
+liberty {
+    server {
+        name = wlpServerName
+        bootstrapProperties = ['default.http.port': testServerHttpPort, 'default.https.port': testServerHttpsPort]
+        dropins = [war]
+        looseApplication = false
+    }
+}
+
+
+//TODO
 test {
     doLast {
         println 'inside the test block'
@@ -71,7 +74,3 @@ task integrationTest(type: Test) {
 task url {
     doLast { println 'Vote :: http://localhost:7070/' }
 }
-
-// libertyRun.dependsOn 'installApps'
-// libertyStart.dependsOn 'installApps'
-

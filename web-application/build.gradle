@@ -1,35 +1,29 @@
 apply plugin: 'war'
 apply plugin: 'liberty'
-// apply plugin: 'org.ysb33r.nodejs.base'
-// apply plugin: 'org.ysb33r.nodejs.npm'
 apply plugin: 'org.ysb33r.nodejs.gulp'
 
 description = 'Conference :: Web'
 dependencies {
-    libertyRuntime group: 'com.ibm.websphere.appserver.runtime', name: 'wlp-webProfile7', version:'17.0.0.3'
+    libertyRuntime group: 'io.openliberty', name: 'openliberty-runtime', version:'17.0.0.3'
 }
 
 buildscript {
-	repositories {
-		mavenLocal()
-		mavenCentral()
-		maven {
-		    url "https://plugins.gradle.org/m2/"
-		}
-		maven {
-			url 'https://oss.sonatype.org/content/repositories/snapshots/'
-		}
-	}
-	dependencies {
-		classpath "net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.1-SNAPSHOT"
-		classpath "gradle.plugin.org.ysb33r.gradle:nodejs-gradle-plugin:0.1"
-	}
-}
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        // to be removed
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.org.ysb33r.gradle:nodejs-gradle-plugin:0.1"
 
-war {
-    from "build/static-resources"
-    webAppDirName = "src/main/local/webapp"
-    archiveName = 'ROOT.' + extension
+        // snapshot to removed upon release
+        classpath "net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0.1-SNAPSHOT"
+    }
 }
 
 ext {
@@ -38,22 +32,56 @@ ext {
     testServerHttpPort = 8080
 }
 
+war {
+    from "build/static-resources"
+    webAppDirName = "src/main/local/webapp"
+    archiveName = 'ROOT.' + extension
+}
+
+nodejs {
+    // comes with npm version '4.2.0'
+    executable version : '7.1.0'
+}
+
+npm {
+    homeDirectory 'src/main/static/'
+}
+
+gulp {
+    gulpFile 'src/main/static/gulpfile.js'
+}
+
+
+task npmInstall(type: org.ysb33r.gradle.nodejs.tasks.NpmTask) {
+    description = 'Run npm install from Gradle.'
+    command 'install'
+}
+
+task gulpBuild(type: org.ysb33r.gradle.nodejs.tasks.GulpTask) {
+    description = 'Run gulp build from Gradle. Build directory is target.'
+    target 'build'
+}
+
 liberty {
-	server {
-		name = wlpServerName
+    server {
+        name = wlpServerName
         looseApplication = false
-	}
+    }
 }
 
 gradle.taskGraph.whenReady { graph ->
-	if (graph.hasTask(":web-application:libertyStart")) {
-		libertyStart.doLast {
-			println ("Application is running on http://localhost:${testServerHttpPort}/")
-		}
-	}
+    if (graph.hasTask(":web-application:libertyStart")) {
+        libertyStart.doLast {
+            println ("Application is running on http://localhost:${testServerHttpPort}/")
+        }
+
+        /** Uncomment to automatically open your web app in a browser **/
+        // libertyStart.finalizedBy 'openWebApp'
+    }
 }
 
 task openWebApp {
+    description = 'Open browser to http://localhost:8080/'
     doLast {
         java.awt.Desktop.desktop.browse "http://localhost:${testServerHttpPort}/".toURI()
     }
@@ -62,26 +90,6 @@ task openWebApp {
 task cpEndpointsService(type: Copy) {
     from "src/main/local/static/app/shared/endpoints.service.ts"
     into "src/main/static/app/shared"
-}
-
-gulp {
-    gulpFile 'src/main/static/gulpfile.js'
-}
-
-nodejs {
-    executable version : '7.1.0'
-}
-
-npm {
-	homeDirectory 'src/main/static/'
-}
-
-task npmInstall(type: org.ysb33r.gradle.nodejs.tasks.NpmTask) {
-	command 'install'
-}
-
-task gulpBuild(type: org.ysb33r.gradle.nodejs.tasks.GulpTask) {
-	target 'build'
 }
 
 task copyTarget(type: Copy) {
@@ -94,7 +102,8 @@ task deleteTarget(type: Delete) {
 }
 
 build.dependsOn 'gulpBuild'
-copyTarget.dependsOn 'gulpBuild'
 gulpBuild.dependsOn 'npmInstall'
+
+copyTarget.dependsOn 'gulpBuild'
 war.dependsOn 'copyTarget'
 clean.finalizedBy 'deleteTarget'
