@@ -49,8 +49,6 @@ liberty {
     }
 }
 
-
-//TODO
 test {
     doLast {
         println 'inside the test block'
