@@ -64,3 +64,4 @@ task url {
 
 check.dependsOn ':demo-bootstrap:build'
 test.dependsOn 'libertyCreate'
+clean.dependsOn 'libertyStop'

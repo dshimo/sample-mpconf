@@ -41,3 +41,5 @@ liberty {
 task url {
     doLast { println ("Schedule :: http://localhost:6060") }
 }
+
+clean.dependsOn 'libertyStop'

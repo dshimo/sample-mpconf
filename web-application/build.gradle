@@ -113,4 +113,5 @@ task deleteTarget(type: Delete) {
 build.dependsOn 'gulpBuild'
 copyTarget.dependsOn 'gulpBuild'
 war.dependsOn 'copyTarget'
+clean.dependsOn 'libertyStop'
 clean.finalizedBy 'deleteTarget'

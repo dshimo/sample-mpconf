@@ -72,3 +72,5 @@ task integrationTest(type: Test) {
 task url {
     doLast { println 'Vote :: http://localhost:7070/' }
 }
+
+clean.dependsOn 'libertyStop'
