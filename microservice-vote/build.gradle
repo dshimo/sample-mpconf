@@ -17,18 +17,15 @@ dependencies {
 buildscript {
     repositories {
         mavenCentral()
-        maven {
-            // to be removed
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
     }
     dependencies {
-        // snaptshot to be removed upon release
-        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0.1-SNAPSHOT'
+        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0.1'
     }
 }
 
 ext {
+    warfileName = "ROOT" 
+
     // Liberty server properties
     wlpServerName = 'voteServer'
     testServerHttpPort = 7070
@@ -37,7 +34,7 @@ ext {
 }
 
 war {
-    archiveName = 'ROOT.' + extension
+    archiveName = warfileName + '.' + extension
 }
 
 liberty {
@@ -45,7 +42,6 @@ liberty {
         name = wlpServerName
         bootstrapProperties = ['default.http.port': testServerHttpPort, 'default.https.port': testServerHttpsPort]
         dropins = [war]
-        looseApplication = false
     }
 }
 
