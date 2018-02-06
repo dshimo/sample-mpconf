@@ -17,14 +17,17 @@ dependencies {
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
     dependencies {
-        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0.1'
+        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.1.1-SNAPSHOT'
     }
 }
 
 ext {
-    warfileName = "ROOT" 
+    warfileName = "ROOT"
 
     // Liberty server properties
     wlpServerName = 'voteServer'
@@ -38,6 +41,7 @@ war {
 }
 
 liberty {
+    installDir = file("$rootDir/liberty/wlp")
     server {
         name = wlpServerName
         bootstrapProperties = ['default.http.port': testServerHttpPort, 'default.https.port': testServerHttpsPort]

@@ -13,10 +13,13 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
     dependencies {
         classpath "gradle.plugin.org.ysb33r.gradle:nodejs-gradle-plugin:0.1"
-        classpath "net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.0.1"
+        classpath "net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.1.1-SNAPSHOT"
     }
 }
 
@@ -66,6 +69,7 @@ task gulpBuild(type: org.ysb33r.gradle.nodejs.tasks.GulpTask) {
 }
 
 liberty {
+    installDir = file("$rootDir/liberty/wlp")
     server {
         name = wlpServerName
         looseApplication = false
